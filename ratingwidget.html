@@ -25,10 +25,36 @@
         class RatingWidget extends HTMLElement {
             constructor() {
                 super();
+
+                const shadow = this.attachShadow({mode: 'closed'});
+
+                const template = document.createElement('template');
+                template.innerHTML = `
+                    <style>
+                        .star {
+
+                        }
+                    </style>
+                    <section class="rating">
+                        <span class="star" onclick="rate(1)"></span>
+                        <span class="star" onclick="rate(2)"></span>
+                        <span class="star" onclick="rate(3)"></span>
+                        <span class="star" onclick="rate(4)"></span>
+                        <span class="star" onclick="rate(5)"></span>
+                    </section>
+
+                `
+
+                //function that onclick sets rating value
+
+                //function on click changes color of all stars before
             }
+
         }
 
         window.customElements.define('rating-widget', RatingWidget);
+
+        //separately create functionality for submit button
       </script>
     
   </body>
