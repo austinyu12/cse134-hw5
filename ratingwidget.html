@@ -32,62 +32,48 @@
                 template.innerHTML = `
                     <style>
                         .star {
-
+                            font-size: 1.6rem;
                         }
                     </style>
+                    <h1>Rating Widget</h1>
                     <section class="rating">
-                        <span class="star" id="rate1" onclick="rate(1)">★</span>
-                        <span class="star" id="rate2" onclick="rate(2)">★</span>
-                        <span class="star" id="rate3" onclick="rate(3)">★</span>
-                        <span class="star" id="rate4" onclick="rate(4)">★</span>
-                        <span class="star" id="rate5" onclick="rate(5)">★</span>
+                        <span class="stars" id='star1' onclick="rate(1)">★</span>
+                        <span class="stars" id='star2' onclick="rate(2)">★</span>
+                        <span class="stars" id='star3' onclick="rate(3)">★</span>
+                        <span class="stars" id='star4' onclick="rate(4)">★</span>
+                        <span class="stars" id='star5' onclick="rate(5)">★</span>
                     </section>
                     <span id='reply'></span>
                 `
 
                 shadow.appendChild(template.content.cloneNode(true));
+                const stars = shadow.querySelectorAll('.stars');
 
-                const rate1 = shadow.querySelector('#rate1');
-                const rate2 = shadow.querySelector('#rate2');
-                const rate3 = shadow.querySelector('#rate3');
-                const rate4 = shadow.querySelector('#rate4');
-                const rate5 = shadow.querySelector('#rate5');
-
-                const reply = shadow.querySelector('#reply');
                 let rating = 0;
 
-                //function that onclick sets rating value
-                rate1.addEventListener('click', () => {
-                    rating = 1;
-                    reply.textContent = 'Thanks for your feedback of 1 stars. We\'ll try to do better!';
-                    console.log(rating);
-                });
+                //for every star, add an anonymous function that runs when hover occurs on each element
+                //while any value being mouseovered, set star and all stars before to colored
+                stars.forEach(el => el.addEventListener('mouseover', event => {
+                    let strRating = el.getAttribute('id');
+                    console.log(typeof strRating);
+                    let intRating= parseInt(strRating, 10);
+                    console.log(typeof intRating);
+                    
+                    //update star colors
+                }));
 
-                rate2.addEventListener('click', () => {
-                    rating = 2;
-                    reply.textContent = 'Thanks for your feedback of 2 stars. We\'ll try to do better!';
+                //when nothing mouseovered (mouseout), check current rating and set star and all stars before to colored
+                stars.forEach(el => el.addEventListener('mouseout', event => {
                     console.log(rating);
-                });
+                    //update star colors
+                }));
 
-                rate3.addEventListener('click', () => {
-                    rating = 3;
-                    reply.textContent = 'Thanks for your feedback of 3 stars. We\'ll try to do better!';
-                    console.log(rating);
-                });
+                //figure out how to make on click, set rating, and send to endpoint
+                stars.forEach(el => el.addEventListener('click', event => {
+                    console.log(el.getAttribute('id'));
+                    //update star colors
+                }));
 
-                rate4.addEventListener('click', () => {
-                    rating = 4;
-                    reply.textContent = 'Thanks for the 4 star rating!';
-                    console.log(rating);
-                });
-
-                rate5.addEventListener('click', () => {
-                    rating = 5;
-                    reply.textContent = 'Thanks for the 5 star rating!';
-                    console.log(rating);
-                });
-
-                //function on click changes color of all stars before
             }
 
         }
