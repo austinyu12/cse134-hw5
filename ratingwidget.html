@@ -52,8 +52,10 @@
 
                 shadow.appendChild(template.content.cloneNode(true));
                 const stars = shadow.querySelectorAll('.stars');
-
                 const reply = shadow.querySelector('#reply');
+                let ratingField = document.getElementById('rating');
+                const maxLength = ratingField.getAttribute('max', 10);
+
                 let ratingValue = 0;
 
                 //for every star, add an anonymous function that runs when hover occurs on each element
@@ -80,8 +82,9 @@
                     //update star colors
                     updateColor(ratingValue);
 
-                    //show appropriate response
-                    if (ratingValue > 3) {
+                    //Math.ceil(maxLength * 0.8)
+                    //show appropriate response 
+                    if (ratingValue > Math.ceil(maxLength * 0.8)) {
                         reply.textContent = `Thanks for the ${ratingValue} star rating!`;
                     }
                     else {
@@ -98,14 +101,14 @@
 
                 //n is the rating value, not index of star
                 function updateColor(n) {
-                    console.log(`the last star is ${n}`);
+                    //console.log(`the last star is ${n}`);
                     let stars = shadow.querySelectorAll('.stars');
                     for (let i = 0; i < n; i++) {
-                        console.log(`star ${i + 1} set to gold`);
+                        //console.log(`star ${i + 1} set to gold`);
                         stars[i].classList.add('selected-star');
                     }
-                    for (let j = n; j < 5; j++) {
-                        console.log(`star ${j + 1} set to normal`);
+                    for (let j = n; j < maxLength; j++) {
+                        //console.log(`star ${j + 1} set to normal`);
                         stars[j].classList.remove('selected-star');
                     }
 
