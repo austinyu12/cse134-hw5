@@ -34,6 +34,10 @@
                         .star {
                             font-size: 1.6rem;
                         }
+
+                        .selected-star {
+                            color: #FFD700;
+                        }
                     </style>
                     <h1>Rating Widget</h1>
                     <section class="rating">
@@ -50,54 +54,61 @@
                 const stars = shadow.querySelectorAll('.stars');
 
                 const reply = shadow.querySelector('#reply');
-                let setRating = 0;
+                let ratingValue = 0;
 
                 //for every star, add an anonymous function that runs when hover occurs on each element
                 //while any value being mouseovered, set star and all stars before to colored
                 stars.forEach(el => el.addEventListener('mouseover', event => {
                     let strRating = el.getAttribute('id');
                     let intRating = parseInt(strRating, 10);
-                    console.log(intRating);
-                    
-                    //update star colors
+                    updateColor(intRating);
                 }));
 
                 //when nothing mouseovered (mouseout), check current rating and set star and all stars before to colored
                 stars.forEach(el => el.addEventListener('mouseout', event => {
-                    console.log(setRating);
-                    //update star colors
+                    updateColor(ratingValue);
                 }));
 
                 //figure out how to make on click, set rating, and send to endpoint
                 stars.forEach(el => el.addEventListener('click', event => {
-                    console.log(el.getAttribute('id'));
                     let strRating = el.getAttribute('id');
                     let intRating = parseInt(strRating, 10);
 
                     //update rating
-                    setRating = intRating;
+                    ratingValue = intRating;
 
                     //update star colors
-
+                    updateColor(ratingValue);
 
                     //show appropriate response
-                    if (setRating > 3) {
-                        reply.textContent = `Thanks for the ${setRating} star rating!`;
+                    if (ratingValue > 3) {
+                        reply.textContent = `Thanks for the ${ratingValue} star rating!`;
                     }
                     else {
-                        reply.textContent = `Thanks for your feedback of ${setRating} stars. We\'ll try to do better!`;
+                        reply.textContent = `Thanks for your feedback of ${ratingValue} stars. We\'ll try to do better!`;
                     }
 
                     //send echo
-                    // let ratingInput = document.getElementById('rating');
-                    // ratingInput.value = setRating;
-                    // let form = document.getElementById('exampleForm');
-                    // form.submit();
+                    let ratingInputField = document.getElementById('rating');
+                    ratingInputField.value = ratingValue;
+                    let form = document.getElementById('exampleForm');
+                    form.submit();
 
                 }));
 
+                //n is the rating value, not index of star
                 function updateColor(n) {
-                    
+                    console.log(`the last star is ${n}`);
+                    let stars = shadow.querySelectorAll('.stars');
+                    for (let i = 0; i < n; i++) {
+                        console.log(`star ${i + 1} set to gold`);
+                        stars[i].classList.add('selected-star');
+                    }
+                    for (let j = n; j < 5; j++) {
+                        console.log(`star ${j + 1} set to normal`);
+                        stars[j].classList.remove('selected-star');
+                    }
+
                 }
 
             }
@@ -105,8 +116,6 @@
         }
 
         window.customElements.define('rating-widget', RatingWidget);
-
-        //separately create functionality for submit button
       </script>
     
   </body>
