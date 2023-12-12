@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Weather Widget</title>
-    <link rel="stylesheet" href="style.css">
+    
   </head>
   <body>
     <h1>Current Weather</h1>
-    <weather-widget>
-        <p id="weather-info">Current Weather Conditions Unavailable</p>
-    </weather-widget>
+    <section id="weather-widget">
+        <img id="weather-icon" alt="weather icon" width="50" height="50">
+        <h2 id="weather-info" style="font-weight: lighter;">Current Weather Conditions Unavailable</h2>
+    </section>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -22,9 +23,11 @@
             const apiURL = `${baseURL}${endpoint.replace('{latitude}', latitude).replace('{longitude}', longitude)}`;
 
             function updateWW(data) {
-                const widget = document.getElementById("weather-widget");
+                const weatherIcon = document.getElementById("weather-icon");
                 const weatherInfo = document.getElementById("weather-info");
-                weatherInfo.textContent = `${data.conditions} ${data.temp} °F`;
+
+                weatherIcon.src = data.icon;
+                weatherInfo.innerHTML = `${data.conditions} ${data.temp} °F`;  
             }
 
             function fetchForecast() {
@@ -40,9 +43,11 @@
                 .then(response => response.json())
                 //extract forecast
                 .then(data => {
+                    console.log(data);
                     updateWW({
                         temp: data.properties.periods[0].temperature,
-                        conditions: data.properties.periods[0].shortForecast
+                        conditions: data.properties.periods[0].shortForecast,
+                        icon: data.properties.periods[0].icon
                     });
                 })
                 .catch(error => console.error('Error:', error));
