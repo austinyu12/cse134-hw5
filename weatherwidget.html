@@ -6,12 +6,30 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Weather Widget</title>
     
+    <style>
+        .info {
+            font-weight: lighter;
+        }
+
+        #weather-widget {
+            background-color: pink;
+            box-sizing: border-box;
+            background-size: cover;
+            padding: 20px;
+            border: 1px solid black;
+            border-radius: 8px;
+            width: fit-content;
+        }
+
+    </style>
   </head>
   <body>
     <h1>Current Weather</h1>
     <section id="weather-widget">
-        <img id="weather-icon" alt="weather icon" width="50" height="50">
-        <h2 id="weather-info" style="font-weight: lighter;">Current Weather Conditions Unavailable</h2>
+        <img id="weather-icon" alt="Weather Icon Missing" width="200" height="200">
+        <h2 class="info" id="weather-info">Current Weather Conditions Unavailable</h2>
+        <h3 class="info" id="windspeed"></h3>
+        <h3 class="info" id="humidity"></h3>
     </section>
 
     <script>
@@ -25,9 +43,13 @@
             function updateWW(data) {
                 const weatherIcon = document.getElementById("weather-icon");
                 const weatherInfo = document.getElementById("weather-info");
+                const windspeed = document.getElementById("windspeed");
+                const humidity = document.getElementById("humidity");
 
                 weatherIcon.src = data.icon;
                 weatherInfo.innerHTML = `${data.conditions} ${data.temp} °F`;  
+                windspeed.innerHTML = `Windspeed: ${data.windspeed}`;
+                humidity.innerHTML = `Humidity: ${data.humidity}%`;
             }
 
             function fetchForecast() {
@@ -47,7 +69,9 @@
                     updateWW({
                         temp: data.properties.periods[0].temperature,
                         conditions: data.properties.periods[0].shortForecast,
-                        icon: data.properties.periods[0].icon
+                        icon: data.properties.periods[0].icon,
+                        windspeed: data.properties.periods[0].windSpeed,
+                        humidity: data.properties.periods[0].relativeHumidity.value
                     });
                 })
                 .catch(error => console.error('Error:', error));
