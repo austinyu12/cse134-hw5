@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
+    <h1>Current Weather</h1>
     <weather-widget>
         <h1>Current Weather Conditions Unavailable</h1>
     </weather-widget>
@@ -19,18 +20,48 @@
 
                 const shadow = this.attachShadow({mode: 'closed'});
 
-                const template = document.createElement('template');
-                // template.innerHTML = `
-
-                // `
-
                 const baseURL = 'https://api.weather.gov/';
-                const endpoint = 'points/{latitude},{longitude}/forecast';
+                const longitude = '-117.2713';
+                const latitude = '32.8328';
+                const endpoint = 'points/{latitude},{longitude}';
 
-                // const URL = `${baseURL}${endpoint.replace('{latitude}', latitude).replace('{longitude}', longitude)}`;
+                const apiURL = `${baseURL}${endpoint.replace('{latitude}', latitude).replace('{longitude}', longitude)}`;
 
-                template.innerHTML = baseURL;
+                let conditions = '';
+                let temp;
+                const template = document.createElement('template');
+
+                function fetchForecast() {
+                    fetch(apiURL)
+                    //goes to website endpoint, returns data as json (now manipulatable like object)
+                    .then(response => response.json())
+                    //use object info to find another url to get forecast
+                    .then(data => {
+                        const forecastURL = data.properties.forecast;
+                        return fetch(forecastURL);
+                    })
+                    //uses new url to get data as json
+                    .then(response => response.json())
+                    //extract forecast
+                    .then(data => {
+                        conditions = data.properties.periods[0].shortForecast;
+                        temp = data.properties.periods[0].temperature;
+                        //temp = data.properties.periods[0].temperatureUnit;
+                        console.log(conditions);
+                        console.log(temp);
+                        //return temp;
+                    })
+                    .catch(error => console.error('Error:', error));
+                }
+
+                //const template = document.createElement('template');
+
+                template.innerHTML = `
+                ${conditions} ${temp} °F
+                `;
+
                 shadow.appendChild(template.content.cloneNode(true));
+
             }
 
         }
